@@ -1,0 +1,11 @@
+*
+!*.gitignore
+!*.c
+!*.h
+!*.mk
+!*.py
+!*.json
+!*-inputs\*
+!*-inputs
+!README
+!Makefile
