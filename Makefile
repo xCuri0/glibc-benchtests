@@ -100,7 +100,7 @@ endif
 $(addprefix $(objpfx)bench-,$(bench-math)): -lm
 $(addprefix $(objpfx)bench-,$(math-benchset)): -lm
 $(addprefix $(objpfx)bench-,$(bench-pthread)): -lpthread
-$(addprefix $(objpfx)bench-,$(bench-malloc)): -lpthread
+$(addprefix $(objpfx)bench-,$(bench-malloc)): -lm -lpthread
 
 
 
@@ -150,7 +150,7 @@ bench-deps := bench-skeleton.c bench-timing.h Makefile
 
 run-bench = $(test-wrapper-env) \
 	    $(run-program-env) \
-	    $($*-ENV) $(test-via-rtld-prefix) $${run}
+	    $($*-ENV) $(test-via-rtld-prefix) ./$${run}
 
 timing-type := $(objpfx)bench-timing-type
 

@@ -1,11 +1,4 @@
-*
-!*.gitignore
-!*.c
-!*.h
-!*.mk
-!*.py
-!*.json
-!*-inputs\*
-!*-inputs
-!README
-!Makefile
+*.o
+bench*
+!bench*.c
+!bench*.h

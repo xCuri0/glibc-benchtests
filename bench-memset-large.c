@@ -115,3 +115,11 @@ test_main (void)
 }
 
 #include <support/test-driver.c>
+
+#define libc_hidden_builtin_def(X)
+#define libc_hidden_def(X)
+#define libc_hidden_weak(X)
+#define weak_alias(X,Y)
+#undef MEMSET
+#define MEMSET generic_memset
+#include <string/memset.c>
