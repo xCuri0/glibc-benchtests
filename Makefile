@@ -18,7 +18,7 @@
 # Makefile for benchmark tests.  The only useful target here is `bench`.
 # Add benchmark functions in alphabetical order.
 
-CFLAGS = -I ./sysdeps/generic -I ./include -include ./include/libc-symbols.h -I .
+CFLAGS = -I ./sysdeps/generic -I ./sysdeps/x86 -I ./include -include ./include/libc-symbols.h -I .
 
 bench-math := acos acosh asin asinh atan atanh cos cosh exp exp2 log log2 \
 	      modf pow rint sin sincos sinh sqrt tan tanh fmin fmax fminf \
