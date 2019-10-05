@@ -20,7 +20,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include <pthread.h>
+#include <support/xthread.h>
 
 static size_t pgsize;
 
@@ -40,19 +40,19 @@ static void
 thread_create (int nthreads, size_t stacksize, size_t guardsize)
 {
   pthread_attr_t attr;
-  pthread_attr_init (&attr);
+  xpthread_attr_init (&attr);
 
   stacksize = stacksize * pgsize;
   guardsize = guardsize * pgsize;
 
-  pthread_attr_setstacksize (&attr, stacksize);
-  pthread_attr_setguardsize (&attr, guardsize);
+  xpthread_attr_setstacksize (&attr, stacksize);
+  xpthread_attr_setguardsize (&attr, guardsize);
 
   pthread_t ts[nthreads];
 
   for (int i = 0; i < nthreads; i++)
-    ts[i] = pthread_create (&attr, thread_dummy, NULL, NULL);
+    ts[i] = xpthread_create (&attr, thread_dummy, NULL);
 
   for (int i = 0; i < nthreads; i++)
-    pthread_join (ts[i], NULL);
+    xpthread_join (ts[i]);
 }

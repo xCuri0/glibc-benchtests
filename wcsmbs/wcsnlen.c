@@ -1,7 +1,6 @@
-/* Support macros for making weak and strong aliases for symbols,
-   and for using symbol sets and linker warnings with GNU ld.
-   Copyright (C) 1995-2019 Free Software Foundation, Inc.
+/* Copyright (C) 1998-2019 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
+   Contributed by Ulrich Drepper <drepper@cygnus.com>, 1998.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -17,17 +16,21 @@
    License along with the GNU C Library; if not, see
    <https://www.gnu.org/licenses/>.  */
 
-#ifndef _LIBC_SYMBOLS_H
-#define _LIBC_SYMBOLS_H	1
+#include <wchar.h>
 
-/* This file is included implicitly in the compilation of every source file,
-   using -include.  It includes config.h.  */
+#ifdef WCSNLEN
+# define __wcsnlen WCSNLEN
+#endif
 
-/* Enable declarations of GNU extensions, since we are compiling them.  */
-#define _GNU_SOURCE 1
-
-#include <sys/stat.h>
-
-#define IS_IN(lib) 0
-
-#endif /* libc-symbols.h */
+/* Return length of string S at most maxlen.  */
+size_t
+__wcsnlen (const wchar_t *s, size_t maxlen)
+{
+  const wchar_t *ret = __wmemchr (s, L'\0', maxlen);
+  if (ret)
+    maxlen = ret - s;
+  return maxlen;
+}
+#ifndef WCSNLEN
+weak_alias (__wcsnlen, wcsnlen)
+#endif

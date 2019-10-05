@@ -97,9 +97,15 @@ else
 bench-malloc := $(filter malloc-%,${BENCHSET})
 endif
 
+libsupport := support/support_test_main.o support/set_fortify_handler.o \
+		support/ignore_stderr.o support/xpthread_create.o \
+		support/xpthread_check_return.o support/check.o \
+		support/support_record_failure.o support/write_message.o \
+		support/xpthread_attr_setstacksize.o support/xpthread_attr_setguardsize.o \
+		support/xpthread_join.o support/xpthread_attr_init.o -lpthread
+
 $(addprefix $(objpfx)bench-,$(bench-math)): -lm
 $(addprefix $(objpfx)bench-,$(math-benchset)): -lm
-$(addprefix $(objpfx)bench-,$(bench-pthread)): -lpthread
 $(addprefix $(objpfx)bench-,$(bench-malloc)): -lm -lpthread
 
 
@@ -111,7 +117,7 @@ $(addprefix $(objpfx)bench-,$(bench-malloc)): -lm -lpthread
 # affect their performance.
 .NOTPARALLEL:
 
-bench-extra-objs = json-lib.o support/support_test_main.o support/set_fortify_handler.o support/ignore_stderr.o
+bench-extra-objs = json-lib.o
 
 extra-objs += $(bench-extra-objs)
 others-extras = $(bench-extra-objs)
@@ -152,7 +158,7 @@ run-bench = $(test-wrapper-env) \
 	    $(run-program-env) \
 	    $($*-ENV) $(test-via-rtld-prefix) ./$${run}
 
-timing-type := $(objpfx)bench-timing-type
+timing-type := $(objpfx)./bench-timing-type
 
 bench-clean:
 	rm -f $(binaries-bench) $(addsuffix .o,$(binaries-bench))
@@ -243,7 +249,7 @@ endif
 bench-link-targets = $(timing-type) $(binaries-bench) $(binaries-benchset) \
 	$(binaries-bench-malloc)
 
-$(bench-link-targets): %: %.o $(objpfx)json-lib.o support/support_test_main.o support/set_fortify_handler.o support/ignore_stderr.o \
+$(bench-link-targets): %: %.o $(objpfx)json-lib.o ${libsupport} \
 	$(link-extra-libs-tests) \
 	$(+link-tests)
 

@@ -1,6 +1,5 @@
-/* Support macros for making weak and strong aliases for symbols,
-   and for using symbol sets and linker warnings with GNU ld.
-   Copyright (C) 1995-2019 Free Software Foundation, Inc.
+/* Write a message to standard output.
+   Copyright (C) 2016-2019 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -17,17 +16,17 @@
    License along with the GNU C Library; if not, see
    <https://www.gnu.org/licenses/>.  */
 
-#ifndef _LIBC_SYMBOLS_H
-#define _LIBC_SYMBOLS_H	1
+#include <support/support.h>
 
-/* This file is included implicitly in the compilation of every source file,
-   using -include.  It includes config.h.  */
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
 
-/* Enable declarations of GNU extensions, since we are compiling them.  */
-#define _GNU_SOURCE 1
-
-#include <sys/stat.h>
-
-#define IS_IN(lib) 0
-
-#endif /* libc-symbols.h */
+void
+write_message (const char *message)
+{
+  int saved_errno = errno;
+  ssize_t unused __attribute__ ((unused));
+  unused = write (STDOUT_FILENO, message, strlen (message));
+  errno = saved_errno;
+}

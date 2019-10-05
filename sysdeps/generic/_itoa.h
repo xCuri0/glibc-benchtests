@@ -46,7 +46,16 @@ extern char *_itoa (unsigned long long int value, char *buflim,
 
 extern const char _itoa_upper_digits[];
 extern const char _itoa_lower_digits[];
+#if IS_IN (libc) || (IS_IN (rtld) && !defined NO_RTLD_HIDDEN)
+hidden_proto (_itoa_upper_digits)
+hidden_proto (_itoa_lower_digits)
+#endif
 
+#if IS_IN (libc)
+extern char *_itoa_word (_ITOA_WORD_TYPE value, char *buflim,
+			 unsigned int base,
+			 int upper_case) attribute_hidden;
+#else
 static inline char * __attribute__ ((unused, always_inline))
 _itoa_word (_ITOA_WORD_TYPE value, char *buflim,
 	    unsigned int base, int upper_case)
@@ -75,6 +84,7 @@ _itoa_word (_ITOA_WORD_TYPE value, char *buflim,
   return buflim;
 }
 # undef SPECIAL
+#endif
 
 /* Similar to the _itoa functions, but output starts at buf and pointer
    after the last written character is returned.  */

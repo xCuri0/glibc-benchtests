@@ -1,6 +1,5 @@
-/* Support macros for making weak and strong aliases for symbols,
-   and for using symbol sets and linker warnings with GNU ld.
-   Copyright (C) 1995-2019 Free Software Foundation, Inc.
+/* pthread_attr_setguardsize with error checking.
+   Copyright (C) 2017-2019 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -17,17 +16,11 @@
    License along with the GNU C Library; if not, see
    <https://www.gnu.org/licenses/>.  */
 
-#ifndef _LIBC_SYMBOLS_H
-#define _LIBC_SYMBOLS_H	1
+#include <support/xthread.h>
 
-/* This file is included implicitly in the compilation of every source file,
-   using -include.  It includes config.h.  */
-
-/* Enable declarations of GNU extensions, since we are compiling them.  */
-#define _GNU_SOURCE 1
-
-#include <sys/stat.h>
-
-#define IS_IN(lib) 0
-
-#endif /* libc-symbols.h */
+void
+xpthread_attr_setguardsize (pthread_attr_t *attr, size_t guardsize)
+{
+  xpthread_check_return ("pthread_attr_setguardize",
+			 pthread_attr_setguardsize (attr, guardsize));
+}
