@@ -256,8 +256,7 @@ $(bench-link-targets): %: %.o $(objpfx)json-lib.o ${libsupport} \
 $(bench-link-targets): LDFLAGS += $(link-bench-bind-now)
 
 $(objpfx)bench-%.c: %-inputs $(bench-deps)
-	{ if [ -n "$($*-INCLUDE)" ]; then \
-	  cat $($*-INCLUDE); \
-	fi; \
-	$(PYTHON) scripts/bench.py $(patsubst %-inputs,%,$<); } > $@-tmp
-	mv -f $@-tmp $@
+	if [ ! -d "$(patsubst %-inputs,%,$<)-inputs" ] ; then \
+	  $(PYTHON) scripts/bench.py $(patsubst %-inputs,%,$<) > $@-tmp; \
+      mv -f $@-tmp $@; \
+	fi
